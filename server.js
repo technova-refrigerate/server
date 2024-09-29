@@ -6,6 +6,7 @@ dotenv.config();
 import Product from "./models/productModel.js";
 import { initAuth } from "@propelauth/express";
 import User from "./models/userModel.js";
+import { UserProduct } from "./models/userModel.js";
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -51,10 +52,12 @@ app.get("/api/products/:id", requireUser, async (req, res) => {
 
 app.get("/api/products", requireUser, async (req, res) => {
   try {
-    let user = await User.findOne({ propelAccessToken: req.user.accessToken });
+    let user = await User.findOne({ propelUserID: req.user.userId });
 
     if (user) {
       res.json(user.products);
+    } else {
+      res.json([]);
     }
   } catch (err) {
     res.status(500).json({ error: "Internal server error" });
@@ -86,15 +89,19 @@ app.post("/api/products", requireUser, async (req, res) => {
       bestBefore,
       storageLocation,
     };
-
+    // const productDocument = new UserProduct(newProduct);
+    console.log("new p", newProduct);
+    console.log(newProduct instanceof UserProduct);
     user.products.push(newProduct);
     console.log("user after product", user);
+    console.log(user instanceof User);
 
     await user.save();
     console.log("user after save", user);
 
     res.status(201).json(newProduct);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err });
   }
 });

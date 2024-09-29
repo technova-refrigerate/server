@@ -23,7 +23,7 @@ const ProductSchema = new mongoose.Schema({
 //     min: 0,
 //   },
   bestBefore: {
-    type: Date,
+    type: Number,
     required: false,
   },
   dateStored: {
@@ -41,10 +41,10 @@ const UserSchema = new mongoose.Schema({
   propelUserID: {
     type: String,
     required: true,
-    unique: true,
   },
   products: [ProductSchema],
 });
 
 const User = mongoose.model("User", UserSchema);
+export const UserProduct = mongoose.model("UserProduct", ProductSchema);
 export default User;
