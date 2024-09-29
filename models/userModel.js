@@ -15,7 +15,7 @@ const ProductSchema = new mongoose.Schema({
   },
   subtitle: {
     type: String,
-    required: true,
+    required: false,
   },
 //   quantity: {
 //     type: Number,
@@ -24,7 +24,7 @@ const ProductSchema = new mongoose.Schema({
 //   },
   bestBefore: {
     type: Date,
-    required: true,
+    required: false,
   },
   dateStored: {
     type: Date,
