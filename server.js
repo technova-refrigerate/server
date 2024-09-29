@@ -105,4 +105,33 @@ app.post("/api/products", requireUser, async (req, res) => {
     res.status(500).json({ error: err });
   }
 });
+
+app.delete("/api/products/:id", requireUser, async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    let user = await User.findOne({ propelUserID: req.user.userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const productIndex = user.products.findIndex(product => product.id === productId);
+    
+    if (productIndex === -1) {
+      return res.status(404).json({ message: "Product not found in user's products" });
+    }
+
+    user.products.splice(productIndex, 1);
+    
+    await user.save();
+
+    res.status(200).json({ message: "Product removed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
 app.listen(port, () => console.log(`Server running on port ${port}`));

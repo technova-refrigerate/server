@@ -23,7 +23,7 @@ const ProductSchema = new mongoose.Schema({
 //     min: 0,
 //   },
   bestBefore: {
-    type: Number,
+    type: Date,
     required: false,
   },
   dateStored: {
