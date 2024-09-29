@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 
 app.get('/products/all', async (req, res) => {
     try {
-        const products = await Product.find({}, "_id Name");
+        const products = await Product.find({}, "_id Name Name_subtitle");
         res.json(products);
     } catch (error) {
         res.status(500).json({ message: error.message });
